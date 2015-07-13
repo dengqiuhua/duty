@@ -105,18 +105,18 @@
 				require("header.php"); 
             ?> 
 		    
-		    <div class="container">
-		    	<div class="row">
-		    		<div class="span8">
+		    <div class="container" style="width:1060px;">
+		    	<div class="row-fluid">
+		    		<div class="span9">
 						<section>
 							<div class="well">
 								<p>
-								默认排除星期天，若要包含某天或删除某天，请到右边重新查询
+								默认排除周末，若要包含某天或删除某天，请到右边重新查询
 								</p>
 							</div>
 						</section>
 						<section id="data_all">
-							<table class="table table-bordered">
+							<table class="table table-bordered table-hover">
 								<tr>
 									<th>自定义编号</th>
 									<th>姓名</th>									
@@ -136,8 +136,8 @@
 									
 									//遍历所有用户
 									foreach ($data as $key=>$value) {	
-										$startDate = '2015-04-26';
-										$endDate = '2015-05-25';															 
+										$startDate = '2015-05-26';
+										$endDate = '2015-06-25';															 
 										while (strtotime($startDate) <= strtotime($endDate)) {
 											//echo "$startDate\n";										
 											//当天										
@@ -148,6 +148,7 @@
 											$sign_noon = strtotime($date." 12:00");
 											$sign_noon2 = strtotime($date." 13:40");
 											$sign_afternoon = strtotime($date." 17:40");
+											$sign_overtime = strtotime($date." 18:50");//加班
 											//当周
 											$current_week=date('w',strtotime($date));
 											//当天
@@ -168,23 +169,27 @@
 													if ($on != $off) {
 														//迟到
 														if ($on>$sign_moning&&$on<$sign_noon) {
-															$remark = "迟到";
+															$remark = "迟到 ";
 														}elseif ($on>$sign_noon) {
 															//上午没打卡
-															$remark = "上午缺勤";
+															$remark = "上午缺勤 ";
 															$on = "";
 														}elseif ($on<=$sign_early) {
-															$remark = "早";
+															$remark = "早 ";
 														}
 
 														if ($off<$sign_noon2) {
 															//下午没来
-															$remark = "下午缺勤";
+															$remark .= "下午缺勤";
 															$off = "";
 														}elseif ($off<$sign_afternoon) {
 															//下午没打卡
-															$remark = "下午未打卡";
+															$remark .= "下午未打卡";
+														}elseif ($off > $sign_overtime) {
+															//
+															$remark .= "加班";
 														}
+
 													}else{
 														//打了一次卡
 														$remark = "只打了一次卡";
@@ -232,7 +237,7 @@
 							</table>
 						</section>
 					</div>
-					<div class="span4">
+					<div class="span3">
 						<div class="well">
 							<form action="?" method="post">
 								<div class="control-group">

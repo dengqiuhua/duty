@@ -4,11 +4,11 @@
 	
 	function data($db){
         $where="";
-        if (isset($_REQUEST['number']) {
+        if (isset($_REQUEST['number'])) {
         	$number=$_REQUEST['number'];
         	$where.=" and number='$number' ";
         }
-        if (isset($_REQUEST['name']) {
+        if (isset($_REQUEST['name'])) {
         	$name=$_REQUEST['name'];
         	$where.=" and name like '%$name%' ";
         }
